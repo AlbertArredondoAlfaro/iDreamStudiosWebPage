@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iDream Studios | iOS Apps Portfolio</title>
+  <meta name="description" content="Minimal, modern portfolio of iOS apps by iDream Studios. Discover our apps on the App Store." />
+
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --bg-elevated: rgba(255, 255, 255, 0.7);
+      --text: #0f172a;
+      --text-muted: #5b6472;
+      --accent: #0066ff;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0d12;
+        --bg-elevated: rgba(17, 19, 26, 0.7);
+        --text: #e5e7eb;
+        --text-muted: #9aa3b2;
+        --accent: #4f8bff;
+        --border: rgba(255, 255, 255, 0.08);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background-color: var(--bg);
+      /* Free background image from Unsplash (replace with your own if desired). */
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.85), transparent 45%),
+        radial-gradient(circle at 90% 10%, rgba(0, 102, 255, 0.12), transparent 40%),
+        url("https://images.unsplash.com/photo-1742199607944-a3a402838079?auto=format&fit=crop&w=2000&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        /* Keep the background image visible in dark mode with a soft overlay. */
+        background-image:
+          radial-gradient(circle at 10% 20%, rgba(11, 13, 18, 0.9), transparent 55%),
+          radial-gradient(circle at 80% 20%, rgba(79, 139, 255, 0.15), transparent 45%),
+          url("https://images.unsplash.com/photo-1742199607944-a3a402838079?auto=format&fit=crop&w=2000&q=80");
+      }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 92vw);
+      margin: 0 auto;
+    }
+
+    .glass {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 0;
+      background:
+        linear-gradient(to bottom, rgba(247, 248, 250, 0.92), rgba(247, 248, 250, 0.6)),
+        radial-gradient(circle at 90% 10%, rgba(0, 102, 255, 0.12), transparent 40%),
+        url("https://images.unsplash.com/photo-1742199607944-a3a402838079?auto=format&fit=crop&w=2000&q=80");
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .site-header {
+        background:
+          linear-gradient(to bottom, rgba(11, 13, 18, 0.92), rgba(11, 13, 18, 0.6)),
+          radial-gradient(circle at 80% 20%, rgba(79, 139, 255, 0.15), transparent 45%),
+          url("https://images.unsplash.com/photo-1742199607944-a3a402838079?auto=format&fit=crop&w=2000&q=80");
+        background-size: cover;
+        background-position: center;
+      }
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links .privacy-link {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 86vh;
+      display: grid;
+      place-items: center;
+      padding: 80px 0 60px;
+    }
+
+    .hero-card {
+      padding: 56px 48px;
+      text-align: center;
+      max-width: 820px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0 0 28px;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      background: var(--accent);
+      color: white;
+      border-radius: 999px;
+      font-weight: 600;
+      box-shadow: 0 10px 24px rgba(0, 102, 255, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(0, 102, 255, 0.35);
+    }
+
+    /* Apps */
+    .apps-section {
+      padding: 40px 0 90px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .app-card {
+      padding: 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .app-card {
+        background: rgba(18, 20, 28, 0.7);
+      }
+    }
+
+    .app-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .app-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: white;
+    }
+
+    .app-card h3 {
+      margin: 16px 0 6px;
+      font-size: 1.1rem;
+    }
+
+    .app-card p {
+      margin: 0 0 12px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .app-link {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Privacy */
+    .privacy-section {
+      padding: 10px 0 90px;
+    }
+
+    .privacy-card {
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    .privacy-card h2 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+    }
+
+    .privacy-meta {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    .privacy-card h3 {
+      margin-top: 24px;
+      font-size: 1.1rem;
+    }
+
+    .privacy-card p {
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      padding: 24px 0 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .footer-content a {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 720px) {
+      .hero-card {
+        padding: 38px 28px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .privacy-card {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="brand">iOS Apps by iDream Studios</div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#apps">Apps</a>
+        <a class="privacy-link" href="#privacy">Privacy Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-card glass">
+        <h1>Carefully Crafted iOS Apps</h1>
+        <p>
+          Minimal, useful, and thoughtfully designed apps for iPhone and iPad — available now on the App Store.
+        </p>
+        <a class="cta" href="https://apps.apple.com/developer/[your-id]" target="_blank" rel="noopener">
+          View on App Store
+        </a>
+        <!-- TODO: Replace [your-id] with your real App Store developer profile URL -->
+      </div>
+    </section>
+
+    <section id="apps" class="apps-section">
+      <div class="container">
+        <h2 class="section-title">My Apps</h2>
+        <p class="section-subtitle">A selection of iOS apps built by iDream Studios.</p>
+
+        <div class="apps-grid">
+          <!-- APP CARD START -->
+          <article class="app-card">
+            <img
+              class="app-icon"
+              src="https://via.placeholder.com/512"
+              alt="App Icon Placeholder"
+            />
+            <!-- TODO: Replace image URL with your app icon (512x512). Example: /images/your-app-icon.png -->
+            <h3>App Name One</h3>
+            <p>Short description of the app in one or two lines.</p>
+            <a class="app-link" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
+              View on App Store →
+            </a>
+            <!-- TODO: Replace with your real App Store app link -->
+          </article>
+          <!-- APP CARD END -->
+
+          <article class="app-card">
+            <img
+              class="app-icon"
+              src="https://via.placeholder.com/512"
+              alt="App Icon Placeholder"
+            />
+            <h3>App Name Two</h3>
+            <p>Another clean, focused app built with care for iOS.</p>
+            <a class="app-link" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
+              View on App Store →
+            </a>
+          </article>
+
+          <article class="app-card">
+            <img
+              class="app-icon"
+              src="https://via.placeholder.com/512"
+              alt="App Icon Placeholder"
+            />
+            <h3>App Name Three</h3>
+            <p>A calm, minimal experience designed for daily use.</p>
+            <a class="app-link" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
+              View on App Store →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="privacy-section">
+      <div class="container">
+        <div class="privacy-card">
+          <h2>Privacy Policy</h2>
+          <p class="privacy-meta">Last updated: 2026</p>
+
+          <h3>Overview</h3>
+          <p>
+            iDream Studios is committed to protecting your privacy. Our iOS apps are designed to
+            collect as little information as possible while still providing a reliable and enjoyable
+            experience.
+          </p>
+
+          <h3>Information We Collect</h3>
+          <p>
+            We do not collect personal information such as your name, email address, or precise location
+            unless a specific app feature explicitly requires it. If an app includes analytics or crash
+            reporting, the data is anonymized and used only to improve performance and stability.
+          </p>
+
+          <h3>How We Use Data</h3>
+          <p>
+            Any anonymized usage data or crash reports are used solely to enhance app quality,
+            diagnose issues, and improve the user experience.
+          </p>
+
+          <h3>Data Sharing</h3>
+          <p>
+            We do not sell or share personal data with third parties. Limited, anonymized data may be
+            processed by Apple services as part of app distribution and standard analytics.
+          </p>
+
+          <h3>Contact</h3>
+          <p>
+            If you have questions about this privacy policy, please refer to the app listing on the
+            App Store for the official developer contact details.
+          </p>
+
+          <!-- TODO: Optional: Add your GitHub Pages URL here for Apple review -->
+          <!-- Example: https://your-username.github.io/your-repo/#privacy -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div>© 2026 iDream Studios. All rights reserved.</div>
+      <a href="#privacy">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    // Optional: adds smooth scrolling for internal anchor links on older browsers
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          event.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
