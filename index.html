@@ -212,10 +212,20 @@
       margin-bottom: 32px;
     }
 
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    .apps-carousel {
+      overflow: hidden;
+      border-radius: var(--radius-md);
+    }
+
+    .apps-track {
+      display: flex;
       gap: 22px;
+      transition: transform 0.55s ease;
+      will-change: transform;
+    }
+
+    .apps-track .app-card {
+      flex: 0 0 calc((100% - 44px) / 3);
     }
 
     .app-card {
@@ -383,6 +393,18 @@
         padding: 28px;
       }
     }
+
+    @media (max-width: 1024px) {
+      .apps-track .app-card {
+        flex: 0 0 calc((100% - 22px) / 2);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .apps-track .app-card {
+        flex: 0 0 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -416,7 +438,8 @@
         <h2 class="section-title">My Apps</h2>
         <p class="section-subtitle">A selection of iOS apps built by iDream Studios.</p>
 
-        <div class="apps-grid">
+        <div class="apps-carousel" data-app-carousel aria-label="Apps carousel">
+          <div class="apps-track" data-app-track>
           <!-- APP CARD START -->
           <article class="app-card">
             <img
@@ -459,6 +482,33 @@
               View on App Store →
             </a>
           </article>
+
+          <article class="app-card">
+            <img
+              class="app-icon"
+              src="https://via.placeholder.com/512?text=New+App+Icon"
+              alt="Placeholder icon for a new app"
+            />
+            <h3>New App Placeholder 1</h3>
+            <p>Replace this text with your app name and short description.</p>
+            <a class="app-link" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
+              View on App Store →
+            </a>
+          </article>
+
+          <article class="app-card">
+            <img
+              class="app-icon"
+              src="https://via.placeholder.com/512?text=New+App+Icon"
+              alt="Placeholder icon for a new app"
+            />
+            <h3>New App Placeholder 2</h3>
+            <p>Replace this text with your app name and short description.</p>
+            <a class="app-link" href="https://apps.apple.com/app/id0000000000" target="_blank" rel="noopener">
+              View on App Store →
+            </a>
+          </article>
+          </div>
         </div>
       </div>
     </section>
@@ -594,6 +644,74 @@
         }
       });
     });
+
+    // Auto-rotating apps carousel (pauses on hover/focus)
+    (() => {
+      const carousel = document.querySelector('[data-app-carousel]');
+      const track = document.querySelector('[data-app-track]');
+      if (!carousel || !track) return;
+
+      const cards = Array.from(track.children);
+      if (cards.length <= 1) return;
+
+      let index = 0;
+      let timer = null;
+
+      const visibleCards = () => {
+        if (window.innerWidth <= 680) return 1;
+        if (window.innerWidth <= 1024) return 2;
+        return 3;
+      };
+
+      const maxIndex = () => Math.max(cards.length - visibleCards(), 0);
+
+      const updatePosition = (animate = true) => {
+        if (!cards[0]) return;
+        track.style.transition = animate ? 'transform 0.55s ease' : 'none';
+        const cardWidth = cards[0].getBoundingClientRect().width;
+        const styles = window.getComputedStyle(track);
+        const gap = parseFloat(styles.gap || styles.columnGap || '0') || 0;
+        const offset = index * (cardWidth + gap);
+        track.style.transform = `translateX(-${offset}px)`;
+      };
+
+      const next = () => {
+        const limit = maxIndex();
+        index = index >= limit ? 0 : index + 1;
+        updatePosition(true);
+      };
+
+      const start = () => {
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, 3600);
+      };
+
+      const stop = () => {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      updatePosition(false);
+      start();
+
+      window.addEventListener('resize', () => {
+        const limit = maxIndex();
+        if (index > limit) index = 0;
+        updatePosition(false);
+      });
+
+      carousel.addEventListener('mouseenter', stop);
+      carousel.addEventListener('mouseleave', start);
+      carousel.addEventListener('focusin', stop);
+      carousel.addEventListener('focusout', start);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+    })();
   </script>
 </body>
 </html>
