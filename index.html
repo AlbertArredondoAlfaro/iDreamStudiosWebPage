@@ -810,40 +810,43 @@
       });
     });
 
-    // Auto-rotating apps carousel (pauses on hover/focus)
+    // Auto-rotating apps carousel (infinite loop, pauses on hover/focus)
     (() => {
       const carousel = document.querySelector('[data-app-carousel]');
       const track = document.querySelector('[data-app-track]');
       if (!carousel || !track) return;
 
-      const cards = Array.from(track.children);
-      if (cards.length <= 1) return;
-
-      let index = 0;
+      if (track.children.length <= 1) return;
       let timer = null;
+      let isAnimating = false;
 
-      const visibleCards = () => {
-        if (window.innerWidth <= 680) return 1;
-        if (window.innerWidth <= 1024) return 2;
-        return 3;
-      };
-
-      const maxIndex = () => Math.max(cards.length - visibleCards(), 0);
-
-      const updatePosition = (animate = true) => {
-        if (!cards[0]) return;
-        track.style.transition = animate ? 'transform 0.55s ease' : 'none';
-        const cardWidth = cards[0].getBoundingClientRect().width;
+      const slideDistance = () => {
+        const firstCard = track.children[0];
+        if (!firstCard) return 0;
+        const cardWidth = firstCard.getBoundingClientRect().width;
         const styles = window.getComputedStyle(track);
         const gap = parseFloat(styles.gap || styles.columnGap || '0') || 0;
-        const offset = index * (cardWidth + gap);
-        track.style.transform = `translateX(-${offset}px)`;
+        return cardWidth + gap;
       };
 
       const next = () => {
-        const limit = maxIndex();
-        index = index >= limit ? 0 : index + 1;
-        updatePosition(true);
+        if (isAnimating || track.children.length <= 1) return;
+        const distance = slideDistance();
+        if (!distance) return;
+
+        isAnimating = true;
+        track.style.transition = 'transform 0.55s ease';
+        track.style.transform = `translateX(-${distance}px)`;
+      };
+
+      const onTransitionEnd = () => {
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(0)';
+        const first = track.firstElementChild;
+        if (first) track.appendChild(first);
+        // Force reflow so next transition is applied reliably.
+        void track.offsetWidth;
+        isAnimating = false;
       };
 
       const start = () => {
@@ -858,13 +861,12 @@
         }
       };
 
-      updatePosition(false);
+      track.addEventListener('transitionend', onTransitionEnd);
       start();
 
       window.addEventListener('resize', () => {
-        const limit = maxIndex();
-        if (index > limit) index = 0;
-        updatePosition(false);
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(0)';
       });
 
       carousel.addEventListener('mouseenter', stop);
