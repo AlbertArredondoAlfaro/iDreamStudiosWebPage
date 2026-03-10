@@ -804,7 +804,8 @@
         track.style.transform = `translateX(-${distance}px)`;
       };
 
-      const onTransitionEnd = () => {
+      const onTransitionEnd = (event) => {
+        if (event.target !== track || event.propertyName !== 'transform') return;
         track.style.transition = 'none';
         track.style.transform = 'translateX(0)';
         const first = track.firstElementChild;
